@@ -1,12 +1,6 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Solution {
-	
-	static int n, limitCal, scoreMax;
-	static boolean[] isvisited;
-	static int[][] arr;
-	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
@@ -14,64 +8,37 @@ public class Solution {
 		
 		for(int t=0; t<T; t++) {
 			
-			n = sc.nextInt();			//재료의 수
-			limitCal = sc.nextInt();	//제한 칼로리
+			int n = sc.nextInt();			//재료의 개수
+			int limitCal = sc.nextInt();	//제한 칼로리
 			
-			//재료에 대한 점수와 칼로리를 담을 배열 생성 및 값 입력받기
-			arr = new int[n][2];	
-			for(int i=0; i<n; i++) {
-				int score = sc.nextInt();	//맛에 대한 점수
-				int cal = sc.nextInt();		//칼로리
-				
-				arr[i][0] = score;
-				arr[i][1] = cal;
+			int[] score = new int[n+1];		//맛에 대한 점수 배열
+			int[] cal = new int[n+1];		//칼로리에 대한 점수 배열
+			
+			//값 입력받기
+			for(int i=1; i<=n; i++) {
+				score[i]=sc.nextInt();
+				cal[i]=sc.nextInt();
 			}
 			
-			//선택 확인 배열
-			isvisited = new boolean[n];
 			
-			scoreMax=0;
+			int[][] dp = new int[n+1][limitCal+1];	//dp배열 생성
 			
-			subset(0);
-			
-			//출력
-			System.out.printf("#%d %d\n", (t+1), scoreMax);
-			
-		}
-	}
-	
-	//재료 n개 중 0~n개 고르기 > 순서 영향X > 중복X > 부분집합
-	public static void subset(int idx) {
-		
-		if(idx==n) {
-			
-			int scoredSum=0; int calSum=0;
-			
-			//선택한 재료의 칼로리와 점수를 각각 더하기
-			for(int i=0; i<isvisited.length; i++) {
-				if(isvisited[i]) {
-					scoredSum+=arr[i][0];
-					calSum+=arr[i][1];
+			for(int i=1; i<n+1; i++) {				//재료 하나씩 더한 것에 대한 반복문
+				for(int j=0; j<limitCal+1; j++) {	//재료 하난에 칼로리를 계산 한 것
 					
-					//칼로리의 합이 제한칼로리보다 높으면 재귀 멈추기
-					if(calSum>limitCal) return;
+					if(cal[i]<=j) {			//현재 제한칼로리가 이 재료의 칼로리보다 높다면
+						dp[i][j]=Math.max(dp[i-1][j], dp[i-1][j-cal[i]]+score[i]);
+					}
+					
+					else {					//현재 제한 칼로리가 이 재료의 칼로리보다 낮다면
+						dp[i][j]=dp[i-1][j];
+					}
 				}
 			}
 			
-			//맛에 대한 점수가 가장 높은 값을 찾기
-			scoreMax = Math.max(scoredSum, scoreMax);
-			return;
-		}
-		
-		
-		if(!isvisited[idx]) {
+			//출력
+			System.out.printf("#%d %d\n", (t+1), dp[n][limitCal]);
 			
-			isvisited[idx]=true;
-			subset(idx+1);
-			
-			isvisited[idx]=false;
-			subset(idx+1);
 		}
-		
 	}
 }
