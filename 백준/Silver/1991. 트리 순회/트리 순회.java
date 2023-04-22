@@ -5,7 +5,6 @@ public class Main {
 	
 	static int n;
 	static List<String>[] list;
-	static StringBuilder sb;
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
@@ -57,11 +56,8 @@ public class Main {
 		}
 	}
 	
-	//후위순회 메서드
+	//중위순회 메서드
 	public static void midDFS(String str) {
-		
-		//스트링빌더 생성
-		sb = new StringBuilder();
 		
 		//종료 조건 > .이면 넘어간다
 		if(str.equals(".")) { return; }
@@ -77,8 +73,7 @@ public class Main {
 						System.out.print(str);						
 					}
 					midDFS(list[i].get(j));
-				}	
-				
+				}					
 			}
 		}
 	}
@@ -86,9 +81,6 @@ public class Main {
 	
 	//후위순회 메서드
 	public static void backDFS(String str) {
-		
-		//스트링빌더 생성
-		sb = new StringBuilder();
 		
 		//종료 조건 > .이면 넘어간다
 		if(str.equals(".")) { return; }
@@ -107,4 +99,6 @@ public class Main {
 			}
 		}
 	}
+	
+	
 }
