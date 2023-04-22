@@ -73,7 +73,8 @@ public class Main {
 						System.out.print(str);						
 					}
 					midDFS(list[i].get(j));
-				}					
+				}	
+				
 			}
 		}
 	}
