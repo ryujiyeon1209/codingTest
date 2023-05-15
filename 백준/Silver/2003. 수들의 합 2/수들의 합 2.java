@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -17,21 +16,24 @@ public class Main {
 			arr[i]=sc.nextInt();
 		}
 		
-		//완전 탐색
-		int count=0;				//m이 되는 경우의 수
-		for(int i=0; i<arr.length; i++){
-			
-			int sum=0;				//수열의 합
-			for(int j=i; j<arr.length; j++) {
-				if(sum==m) { count++; break;}
-				else {sum+=arr[j]; }
-				
-				if(sum==m) { count++; break;}
-			}
+		//결과
+		int count=0;
+		
+		//투포인터
+		int lt=0;
+		int sum=0;
+		
+		for(int rt=0; rt<n; rt++) {
+			sum+=arr[rt];
+
+			if(sum==m)  count++;
+			while(sum>=m) {	//크거나 같다면 sum의 값이 m보다 작을 때까지 빼주기
+				sum-=arr[lt++];
+				if(sum==m) count++;
+			}	
 		}
 		
 		//출력
 		System.out.println(count);
-		
 	}
 }
