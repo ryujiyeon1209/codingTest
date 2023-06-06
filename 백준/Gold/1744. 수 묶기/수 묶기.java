@@ -1,53 +1,48 @@
-import java.util.*;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
+		
+		//수 개수 입력받기
+		int n = sc.nextInt();
+	
+		//배열 생성 및 값 입력받기
+		int[] arr = new int[n];
+		for(int i=0; i<n; i++) {
+			arr[i]=sc.nextInt();
+		}
 
-		PriorityQueue<Integer> plusque = new PriorityQueue(Collections.reverseOrder());
-		PriorityQueue<Integer> minusque = new PriorityQueue();
-		int one=0;
-		int zero=0;
-		int result=0;
+		//배열 정렬
+		Arrays.sort(arr);
 		
-		
-		int num = sc.nextInt();
+		//방문체크 배열
+		boolean[] isvisited = new boolean[n];
 
-		for(int i=0; i<num; i++) {			
-			int n =sc.nextInt();
-			if(n>1) {plusque.add(n);}
-			if(n<0) {minusque.add(n);}
-			if(n==0) zero++;
-			if(n==1) one++;
-		}
+		int sum=0;
 		
-		while(plusque.size()>1) {
-			int idx1 = plusque.poll();
-			int idx2 = plusque.poll();
-			
-			result+= (idx1*idx2);
-		}
-		
-		if(plusque.isEmpty()==false) {
-			result+=plusque.poll();
-		}
-		
-		while(minusque.size()>1) {
-			int idx1 = minusque.poll();
-			int idx2 = minusque.poll();
-			
-			result+= (idx1*idx2);
-		}
-		
-		if(minusque.isEmpty()==false) {
-			if(zero==0) {
-				result+= minusque.poll();
+		//음수 먼저 수 묶기
+		for(int i=0; i<arr.length-1; i++) {
+			if(!isvisited[i] && !isvisited[i+1] && arr[i]<0 && arr[i+1]<=0) {
+				sum+= arr[i]*arr[i+1];
+				isvisited[i]=true; isvisited[i+1]=true;
 			}
 		}
 		
-		result+=one;
+		//큰 수 묶기
+		for(int i=arr.length-1; i>=1; i--) {
+			if(!isvisited[i] && !isvisited[i-1] && arr[i]>1 && arr[i-1]>1) {
+				sum+=arr[i]*arr[i-1];
+				isvisited[i]=true; isvisited[i-1]=true;
+			}
+		}
 		
-		System.out.println(result);
-
+		for(int i=0; i<arr.length; i++) {
+			if(!isvisited[i]) sum+=arr[i];
+		}
+		
+		//출력
+		System.out.println(sum);
 	}
 }
