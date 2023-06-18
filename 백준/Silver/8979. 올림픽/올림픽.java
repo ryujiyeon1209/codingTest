@@ -14,7 +14,7 @@ public class Main {
 		//2차원 배열 생성
 		int[][] arr = new int[n][5];
 		for(int i=0; i<n; i++) {
-			arr[i][0] = sc.nextInt();	//국가 번호
+			arr[i][0] = i+1;	//국가 번호
 			arr[i][1] = sc.nextInt();	//금메달 개수
 			arr[i][2] = sc.nextInt();	//은메달 개수
 			arr[i][3] = sc.nextInt();	//동메달 개수
@@ -27,14 +27,18 @@ public class Main {
 		Arrays.sort(arr, new Comparator<int[]>() {
 			@Override
 			public int compare(int[] o1, int[] o2) {
-				return o2[4]-o1[4];
+				if(o2[1]!=o1[1])return o2[1]-o1[1];
+				if(o2[2]!=o1[2]) return o2[2]-o1[2];
+				return o2[3]-o1[3];
 			}
 		});
+		
 		
 		//순위 찾기
 		int result=0;
 		for(int i=0; i<n; i++) {
 			if(arr[i][0]!=k && arr[i][4]>score) result++;
+			else break;
 		}
 		
 		
