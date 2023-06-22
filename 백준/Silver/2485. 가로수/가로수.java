@@ -29,8 +29,8 @@ public class Main {
 		//최소 최대공약수 구하기
 		int min=tmp;
 		for(int i=2; i<distance.length-1; i++) {
-			int num = gcd(tmp, distance[2]);
-			if(num<min) min=tmp;
+			int num = gcd(tmp, distance[i]);
+			if(num<min) min=num;
 		}
 		
 		//최대공약수와 차이 더하기
