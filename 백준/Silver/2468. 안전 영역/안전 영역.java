@@ -1,93 +1,83 @@
 import java.util.*;
-import java.util.Scanner;
 
 public class Main {
-	static int n, count, max, maxRain;
+	
+	static int n;
 	static int[] r, c;
 	static int[][] arr;
 	static boolean[][] isvisited;
-	static Queue<int[]> queue;
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
-		n = sc.nextInt();	//배열 크기
-		maxRain=0;			//최대로 많이 내리는 비의 양
+		//배열 값 입력받기
+		n = sc.nextInt();
+		arr = new int[n][n];
 		
-		arr = new int[n][n];	//배열 생성 및 값 입력받기
-		for(int i=0; i<arr.length; i++) {
-			for(int j=0; j<arr.length; j++) {
+		int m = 0;
+		for(int i=0; i<n; i++) {
+			for(int j=0; j<n; j++) {
 				arr[i][j]=sc.nextInt();
+				if(m<arr[i][j]) m = arr[i][j];
 			}
 		}
 		
-		r = new int[] {0, 1, 0 ,-1};
-		c = new int[] {1, 0, -1, 0};
+		//사방 탐색
+		r = new int[] {-1, 0, 1, 0};
+		c = new int[] {0, 1, 0, -1};
 		
-		//비의 양이 1~최대까지, 비의 양에 따라 달라지는 안전 영역을 구하자
-		max=0;
-		
-		//비의 양이 1씩 오를 때마다 배열의 크기와 비의 크기가 같다면, 그 지역은 물에 잠겨서 0이 된다
-		Outer:
-		for(int rain=0; rain<=100; rain++) {
+		//테스트케이스 시작
+		int max=0;
+		for(int t=0; t<=m; t++) {
 			
-			for(int i=0; i<arr.length; i++) {	
-				for(int j=0; j<arr.length; j++) {
-					if(arr[i][j]== rain) {
-						arr[i][j]=0;
-					}
-				}
-			}
-
-			//방문 배열 초기화
+			int count=0;
 			isvisited = new boolean[n][n];
 			
-			//지역을 탐색하며 안전지역이 몇개인지 확인해보자
-			count=0;
-			for(int i=0; i<arr.length; i++) {
-				for(int j=0; j<arr.length; j++) {
-					if(arr[i][j]>0 && !isvisited[i][j]) {
-						BFS(new int[] {i, j}); count++;
+			for(int i=0; i<n; i++) {
+				for(int j=0; j<n; j++) {	
+					
+					//장마보다 값이 크고, 방문하지 않았던 곳 DFS 시작
+					if(t<arr[i][j] && !isvisited[i][j]) {
+						count++;
+						DFS(new int[] {i, j}, t);
 					}
+					
 				}
 			}
 			
-			if(max<=count) max = count;
+			max = Math.max(max, count);
 		}
 		
 		//출력
 		System.out.println(max);
-		
 	}
 	
-	public static void BFS(int[] location) {
+	
+	public static void DFS(int[] location, int t) {
 		
-		//큐 생성 및 값 넣기
-		queue = new LinkedList();
-		queue.offer(location);
+		Queue<int[]> queue = new LinkedList();
 		
+		queue.add(location);
+		isvisited[location[0]][location[1]] = true;
 		
 		while(!queue.isEmpty()) {
 			
-			int[] curr = queue.poll();	//현재 지역의 높이
+			int[] curr = queue.poll();
 			
-			int i= curr[0];
-			int j= curr[1];
+			int i=curr[0];
+			int j=curr[1];
 			
-			for(int k=0; k<4; k++) {	//사방 탐색
-				int dr = i+r[k]; 
+			for(int k=0; k<4; k++) {
+				int dr = i+r[k];
 				int dc = j+c[k];
 				
-				//조건에 맞는지 확인
-				if(!(0<=dr && dr<arr.length && 0<=dc && dc<arr.length)) { continue; }
+				if(!(0<=dr && dr<n && 0<=dc && dc<n)) continue;
+				if(arr[dr][dc]<=t) continue;
 				if(isvisited[dr][dc]) continue;
-				if(arr[dr][dc]==0) continue;
 				
-				//조건에 맞다면 큐에 넣고 방문처리하기
-				queue.offer(new int[] {dr, dc});
 				isvisited[dr][dc]=true;
+				queue.add(new int[] {dr, dc});
 			}
 		}
-		
-	}
+	} 
 }
