@@ -13,12 +13,13 @@ public class Main {
 			dp[0][i] = sc.nextInt();
 		}
 		
-		//현재 잔 + 현재 잔으로 오기까지 최대값 
+		//현재 잔으로 오기까지 최대값 
 		for(int i=4; i<n+4; i++) {
-			int type = Math.max(dp[0][i-1]+dp[1][i-3], dp[1][i-2]);
-			type = Math.max(type, dp[0][i-1]+dp[1][i-4]);
+			int one = dp[1][i-3] + dp[0][i-1] + dp[0][i];
+			int two = dp[1][i-2] + dp[0][i];
+			int three = dp[1][i - 1];
 			
-			dp[1][i] = dp[0][i] + type;
+			dp[1][i] = Math.max(one, Math.max(two, three));
 		}
 		
 		//최대값 구하기
