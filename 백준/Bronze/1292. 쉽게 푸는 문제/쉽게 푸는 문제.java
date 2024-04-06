@@ -28,16 +28,17 @@ public class Main {
 		//난이도를 계속 올리며, 수열을 더해야할 때
 		else {
 			while(idx<=end) {
-				int tmp = answer;
+			
 				for(int i=start; i<=idx; i++) {
 					answer+=count;
 				}
-
+				
 				if(idx==end) break;
 				
 				count++;			//난이도 올리고
 				start=idx+1;		//시작점 바꾸고
-				if(idx+count<end) idx+=(count);	//끝지점 바꾸기
+				
+				if(idx+count<=end) idx+=(count);	//끝지점 바꾸기
 				else idx=end;
 				
 			}
