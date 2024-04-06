@@ -1,28 +1,38 @@
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
-		//설탕 무게 입력받기
-		int n = sc.nextInt();	
-	
-		//봉지의 값을 담을 배열 생성 및 초기화
-		int[] dp = new int[50001];
-		dp[3]=1; dp[5]=1;
+		//설탕 무게
+		int n = sc.nextInt();
 		
-		for(int i=4; i<n+1; i++) {
-			if(i%5==0) dp[i]=dp[i-5]+1;			//5kg으로 나눠질 때
-			else if(i%3==0) dp[i]=dp[i-3]+1;	//3kg로 나눠질 때
-			else if(dp[i-3]!=0 && dp[i-5]!=0) {
-				dp[i]=Math.min(dp[i-3], dp[i-5])+1;	//5kg와 3kg로 나눠떨어지지 않을 때
+		//봉지 개수
+		int answer = 0;
+		
+		while(0<n) {
+			
+			//큰 봉지 사용할 수 있으면 사용하기
+			if(n%5==0) {
+				answer += (n/5);
+				n = 0;
+			}
+			
+			//큰 봉지가 안되면 작은 봉지 사용하기
+			else if(3<=n) {	
+				answer++;
+				n-=3;
+			}
+			
+			//큰 봉지, 작은 봉지 모두 사용이 불가하다면
+			else if(n<3) {
+				answer = -1;
+				n = 0;
 			}
 		}
 		
 		//출력
-		if(dp[n]>0) System.out.println(dp[n]);
-		else System.out.println(-1);
-	
+		System.out.println(answer);
+		
 	}
 }
