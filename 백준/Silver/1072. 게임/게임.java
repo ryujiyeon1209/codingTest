@@ -16,13 +16,13 @@ public class Main {
 		//이분탐색
 		Long answer = Long.MAX_VALUE;
 		
-		Long min = x;
-		Long max = 1000000000000L;
+		Long min = 0L;
+		Long max = 1000000000L;
 		
 		while(min<=max) {
 			Long mid = (min+max)/2;
-			
-			if(((mid-x+y)*100/(mid))<=win) min = mid+1;
+
+			if(((mid+y)*100/(mid+x))<=win) min = mid+1;
 			else {
 				answer = Math.min(answer, mid);
 				max = mid-1;
@@ -31,6 +31,6 @@ public class Main {
 		
 		//출력
 		if(answer==Long.MAX_VALUE) System.out.println(-1); 
-		else System.out.println(answer-x);
+		else System.out.println(answer);
 	}
 }
