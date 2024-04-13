@@ -16,7 +16,6 @@ class Solution {
         for(int i=0; i<computers.length; i++){
             for(int j=0; j<computers[i].length; j++){
                 if(computers[i][j]==1) {
-                    computers[j][i]=1;
                     union(i, j);
                 }
             }
@@ -42,8 +41,8 @@ class Solution {
         int px = find(x);
         int py = find(y);
 
-        if(px<=py) parent[py] = px;
-        else parent[px] = py;
+        if(px<=py) parent[py] = px; //y의 최대 부모py의 값을 px로 바꾸기
+        else parent[px] = py;       //x의 최대 부모px의 값을 py로 바꾸기
     }
     
     //부모 찾기
