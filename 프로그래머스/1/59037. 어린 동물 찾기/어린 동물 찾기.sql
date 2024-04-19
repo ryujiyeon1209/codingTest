@@ -1,4 +1,4 @@
 -- 코드를 입력하세요
 select animal_id, name
 from animal_ins
-where not intake_condition = "Aged";
+where intake_condition != "Aged";
