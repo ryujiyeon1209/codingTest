@@ -2,37 +2,45 @@ import java.util.*;
 
 class Solution {
     
-    static int n, m;
-    static boolean[][] isvisited;
+    static int n, m, answer;
     static int[] r, c;
+    static boolean[][] isvisited;
     
     public int solution(int[][] maps) {
         
         n = maps.length;
         m = maps[0].length;
+        
         r = new int[] {-1, 0, 1, 0};
-        c = new int[] {0, 1, 0, -1};
+        c = new int[] {0, -1, 0, 1};
+        
         isvisited = new boolean[n][m];
-       
-    
-        int answer = BFS(maps);
+        
+        answer = -1;
+        BFS(maps);
+        
         return answer;
     }
     
-    public static int BFS(int[][] maps){
+    //BFS
+    public static void BFS(int[][] maps) {
         Queue<int[]> queue = new LinkedList();
-        queue.add(new int[] {0, 0, 1});
-        isvisited[0][0]=true;
         
-        int min = Integer.MAX_VALUE;
-        while(!queue.isEmpty()){
+        isvisited[0][0]=true;
+        queue.add(new int[] {0, 0, 1});
+        
+        while(!queue.isEmpty()) {
             
-            int[] curr = queue.poll();
-            int i = curr[0];
-            int j = curr[1];
-            int depth = curr[2];
+            int[] cur= queue.poll();
             
-            if(i==n-1 && j==m-1) min = Math.min(depth, min);
+            int i = cur[0];
+            int j = cur[1];
+            int depth = cur[2];
+            
+            if(i==n-1 && j==m-1) {
+                answer = depth;
+                return;
+            }
             
             for(int k=0; k<4; k++){
                 int dr = i+r[k];
@@ -42,13 +50,9 @@ class Solution {
                 if(maps[dr][dc]==0) continue;
                 if(isvisited[dr][dc]) continue;
                 
-                
                 isvisited[dr][dc]=true;
                 queue.add(new int[] {dr, dc, depth+1});
             }
         }
-        
-        return min==Integer.MAX_VALUE ? -1 : min;
-        
     }
 }
