@@ -2,24 +2,30 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] prices) {
-        
         int[] answer = new int[prices.length];
         
-        //가격 확인
         Stack<Integer> stack = new Stack();
         for(int i=0; i<prices.length; i++){
-            while(!stack.isEmpty() && prices[i]<prices[stack.peek()]) {               //가격이 떨어졌을 경우        
-                answer[stack.peek()] = i-stack.pop();        
-            }
             
-            stack.add(i);
+            //stack이 비었다면
+            if(stack.isEmpty()) stack.add(i);
+            
+            //다음 날에 주식이 올랐다면
+            else if(prices[stack.peek()]<=prices[i]) stack.add(i);
+            
+            //다음 날에 주식이 떨어졌다면
+            else if(prices[stack.peek()]>prices[i]) {
+                while(!stack.isEmpty() && prices[stack.peek()]>prices[i]) answer[stack.peek()]= i-stack.pop();
+                stack.add(i);
+            }
         }
         
-        //시간 확인
+        int mday = 0;
+        if(!stack.isEmpty()) mday=stack.peek();
         while(!stack.isEmpty()) {
-            int idx = stack.pop();
-            answer[idx] = prices.length-idx-1;
-        }     
+            answer[stack.peek()] = mday-stack.pop();
+        }
+        
         
         return answer;
     }
