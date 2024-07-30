@@ -5,49 +5,48 @@ class Solution {
     static int[] parent;
     
     public int solution(int n, int[][] computers) {
+        int answer = 0;
         
-        //부모 배열 생성 및 초기화
+        //부모 노드 배열
         parent = new int[n];
-        for(int i=0; i<parent.length; i++){
+        for(int i=0; i<n; i++){
             parent[i] = i;
         }
         
-        //유니온 파인드
+        //연결하기
         for(int i=0; i<computers.length; i++){
-            for(int j=0; j<computers[i].length; j++){
-                if(computers[i][j]==1) {
-                    union(i, j);
-                }
+            for(int j=0; j<computers.length; j++){
+                if(i==j) continue;
+                if(computers[i][j]==1) union(i, j);
             }
         }
         
-        //부모가 같지만, 적용이 안됐을 경우를 대비하여
+        //정리
         for(int i=0; i<parent.length; i++){
             parent[i] = find(i);
-        }
+        }        
         
-        //중복제거
+        //중복 네트워크 삭제
         Set<Integer> set = new HashSet();
         for(int i=0; i<parent.length; i++){
-            set.add(parent[i]); 
-        }
+            set.add(parent[i]);
+        }          
         
-        int answer = set.size();
-        return answer;
+        return set.size();
     }
     
-    //부모 같게 만들기
-    public static void union(int x, int y){
+    //유니온
+    public static void union(int x, int y) {
         int px = find(x);
         int py = find(y);
-
-        if(px<=py) parent[py] = px; //y의 최대 부모py의 값을 px로 바꾸기
-        else parent[px] = py;       //x의 최대 부모px의 값을 py로 바꾸기
+        
+        if(px<=py) parent[py] = px;
+        else parent[px]=py;
     }
     
-    //부모 찾기
+    //파인드
     public static int find(int x) {
         if(parent[x]==x) return x;
-        return parent[x] = find(parent[x]);    //재귀를 통해 계속 부모노드 바꿔줌
+        else return parent[x]=find(parent[x]);
     }
 }
