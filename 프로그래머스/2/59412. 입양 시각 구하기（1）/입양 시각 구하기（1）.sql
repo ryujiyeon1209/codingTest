@@ -1,6 +1,6 @@
 -- 코드를 입력하세요
-select date_format(datetime, "%H") as hour, count(animal_id) as count
-from animal_outs
-where 9<=date_format(datetime, "%H") and date_format(datetime, "%H")<=19
-group by date_format(datetime, "%H")
-order by date_format(datetime, "%H") asc;
+select date_format(DATETIME, "%k") as HOUR, count(ANIMAL_ID) as COUNT
+from ANIMAL_OUTS 
+where date_format(DATETIME, "%H") between "09" and "19" 
+group by HOUR
+order by date_format(DATETIME, "%H");
