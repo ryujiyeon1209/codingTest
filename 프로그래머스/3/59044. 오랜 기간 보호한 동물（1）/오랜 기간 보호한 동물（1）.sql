@@ -1,8 +1,7 @@
 -- 코드를 입력하세요
-select i.name, i.datetime
-from animal_ins as i left join animal_outs as o
-    on i.animal_id = o.animal_id
-where o.animal_id is null
-order by i.datetime asc
+select ins.NAME as NAME, ins.DATETIME as DATETIME
+from ANIMAL_INS as ins left outer join ANIMAL_OUTS as outs
+on ins.ANIMAL_ID=outs.ANIMAL_ID
+where outs.ANIMAL_ID is null
+order by ins.DATETIME
 limit 3;
-
