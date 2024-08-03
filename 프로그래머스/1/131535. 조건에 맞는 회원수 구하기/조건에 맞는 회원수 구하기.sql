@@ -1,5 +1,4 @@
 -- 코드를 입력하세요
-select count(user_id) as users
-from user_info
-where 20<=age and age<=29 and
-substring(date_format(joined, "%Y"), 1, 4)=2021;
+select count(USER_ID) as USERS
+from USER_INFO 
+where date_format(JOINED, "%Y")=2021 and AGE between 20 and 29;
