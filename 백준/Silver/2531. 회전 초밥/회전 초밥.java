@@ -4,51 +4,43 @@ public class Main {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
-		int n = sc.nextInt();	//회전벨트에 놓인 접시의 수
-		int d = sc.nextInt();	//초밥의 가짓 수
-		int k = sc.nextInt();	//연속해서 먹는 접시의 수
-		int c = sc.nextInt();	//쿠폰번호 
+		int n = sc.nextInt();
+		int d = sc.nextInt();
+		int k = sc.nextInt();
+		int c = sc.nextInt();
 		
-		//회전 벨트 배열 생성 및 값 입력받기
 		int[] arr = new int[n];
-		for(int i=0; i<n; i++) {
-			arr[i]=sc.nextInt();
+		for(int i=0; i<arr.length; i++) {
+			arr[i] = sc.nextInt();
 		}
-
 		
-		int result=0;
-		
-		//다른 종류를 먹는지 확인하는 set
-		Map<Integer, Integer> map = new HashMap();
+		//개수 세기
+		int[] count = new int[d+1];
 		for(int i=0; i<k; i++) {
-			if(map.containsKey(arr[i])) map.put(arr[i], map.get(arr[i])+1);
-			else map.put(arr[i], 1);
+			count[arr[i]]++;
 		}
 		
-		//연속으로 k개를 먹지 못할 경우를 위해
-		List<Integer> list = new LinkedList();
+		int countz = 0;
+		for(int i=0; i<count.length; i++) {
+			if(0<count[i]) countz++;
+		}
 		
-		//경우의 수
-		for(int i=0; i<n; i++) {
+		int answer = 0;
+		for(int i=1; i<arr.length+1; i++) {
 			
-			//map에 있는 초밥의 종류와 k 비교
-			if(!map.containsKey(c)) list.add(map.size()+1);
-			else list.add(map.size());
-
+			//연속되는 k개의 초밥을 먹은 경우
+			if(count[c]==0) answer = Math.max(answer, countz+1);
+			else answer = Math.max(answer, countz);
 			
-			//같은 종류의 초밥이 2개 이상이라면 개수를 -1 하자
-			if(map.get(arr[i])>1) map.put(arr[i], map.get(arr[i])-1);
-			else map.remove(arr[i]);
+            //초밥 연결시키기
+			if(--count[arr[i-1]]==0) countz--;
 			
-			//k+1 초밥 종류를 map에 넣기
-			int input = (i+k) < n ? i+k : Math.abs(i+k-n);
-			map.put(arr[input], map.getOrDefault(arr[input], 0)+1);		
-			
+			int end = (i+k-1)%n;  
+			if(++count[arr[end]]==1)countz++;
 		}
 		
 		//출력
-		Collections.sort(list);
-		System.out.println(list.get(list.size()-1));
+		System.out.println(answer);
 		
 	}
 }
