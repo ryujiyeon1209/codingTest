@@ -4,42 +4,34 @@ class Solution {
     public int[] solution(int N, int[] stages) {
         int[] answer = new int[N];
         
-        Map<Integer, Integer> map = new HashMap();
+        //단계별 실패 유저 세기
+        int count[] = new int[N+1];
         for(int i=0; i<stages.length; i++){
-            map.put(stages[i], map.getOrDefault(stages[i], 0)+1);
+            if(stages[i]<=N) count[stages[i]]++;
         }
         
-        //실패율 계산
-        List<Double> list = new ArrayList();       
-        double[] result = new double[N+1];
-        
-        double num = stages.length*1.0;
-        for(int i=1; i<=N; i++){
-            int fail = map.getOrDefault(i, 0);
+        //단계별 실패율 계산하기
+        int total = stages.length;
+        Map<Integer, Double> map = new HashMap();
+        for(int i=1; i<count.length; i++){
+            if(total<=0) map.put(i, 0.0);
+            else map.put(i, count[i]/(total*1.0));
             
-            if(fail!=0) {   //클리어를 하지 못한 사람이 있을 때,
-                result[i] = fail/num;
-                list.add(fail/num);
-            } else {        //스테이지에 도달한 사람이 모두 클리어했을 때,
-                result[i] = 0.0;
-                list.add(0.0);
-            }
-            
-            num-=fail;
+            total-=count[i];
         }
         
-        //내림차순 정렬
-        Collections.sort(list, Collections.reverseOrder());
+        //실패율 내림차순으로 정렬
+        List<Integer> list = new ArrayList(map.keySet());
+        Collections.sort(list, new Comparator<Integer>(){
+           public int compare(Integer o1, Integer o2){
+               return map.get(o2).compareTo(map.get(o1));
+           } 
+        });
         
-        //스테이지 찾기
-        for(int i=0; i<list.size(); i++){
-            for(int j=1; j<result.length; j++){
-                 if(result[j]==list.get(i)) {
-                     answer[i] = j;
-                     result[j] = -1;
-                     break;
-                 }
-            }
+        //배열에 저장
+        int idx = 0;
+        for(int key : list){
+            answer[idx++] = key;
         }
         
         return answer;
