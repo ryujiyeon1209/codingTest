@@ -2,17 +2,19 @@ import java.util.*;
 
 class Solution {
     public int solution(String s) {
-        int answer = 1;
-        
-        char[] chList = s.toCharArray();
+        int answer = 0;
+
         Stack<Character> stack = new Stack();
-        for(int i=0; i<chList.length; i++){
-            if(stack.isEmpty()) stack.push(chList[i]);
-            else if(!stack.isEmpty() && chList[i]==stack.peek()) stack.pop();
-            else if(!stack.isEmpty() && chList[i]!=stack.peek()) stack.push(chList[i]);
-        }
+        for(int i=0; i<s.length(); i++){
+            char ch = s.charAt(i);
+            
+            if(stack.isEmpty()) stack.push(ch);
+            else if(ch!=stack.peek()) stack.push(ch);
+            else if(ch==stack.peek()) stack.pop();
         
-        if(!stack.isEmpty()) answer=0;
+        }
+
+        if(stack.isEmpty()) answer = 1;
         return answer;
     }
 }
