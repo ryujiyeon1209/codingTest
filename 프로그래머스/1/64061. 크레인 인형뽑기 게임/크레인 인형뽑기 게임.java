@@ -5,25 +5,33 @@ class Solution {
         int answer = 0;
         
         Stack<Integer> stack = new Stack();
-        for(int i=0; i<moves.length; i++){
-            int pick = moves[i]-1;
-            
-            for(int j=0; j<board.length; j++){
-                if(board[j][pick]!=0) {                         //인형을 뽑고
-                    if(stack.isEmpty() || board[j][pick]!=stack.peek()) {     //같은 인형이 아닐 경우
-                        stack.add(board[j][pick]);            
-                    }
-                    else {                                     //같은 인형일 경우
-                        stack.pop();   
-                        answer+=2;
-                    }   
-                    
-                    board[j][pick]=0;
-                    break;
-                }
-            }
-        }
         
+        //인형뽑기 게임
+        for(int k=0; k<moves.length; k++){
+            
+            //인형 뽑기
+            int i = moves[k]-1;
+            for(int j=0; j<board.length; j++){
+                if(board[j][i]==0) continue;
+                
+                stack.add(board[j][i]);
+                board[j][i]=0;
+                break;
+            }
+            
+            //같은 인형인지 확인
+            int last = 0;
+            if(!stack.isEmpty()) {
+                last = stack.pop();
+                
+                if(!stack.isEmpty() && last==stack.peek()) { 
+                    stack.pop(); 
+                    answer+=2; 
+                }
+                else stack.add(last);
+            } 
+            
+        }
         
         return answer;
     }
