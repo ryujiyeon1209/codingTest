@@ -2,41 +2,34 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
+        List<Integer> list = new ArrayList();
         
-        //각각의 작업이 며칠이 걸리는지 구하기
-        Queue<Integer> days = new LinkedList();
-        for(int i=0; i<progresses.length; i++){
-            days.add((int)Math.ceil((100.0-progresses[i])/speeds[i]));
+        int[] need = new int[progresses.length];
+        for(int i=0; i<need.length; i++){
+            need[i] = (int) Math.ceil((100-progresses[i])/(speeds[i]*1.0));
         }
         
-        //작업 진도 비교하기
-        Queue<Integer> queue = new LinkedList();
         int count = 1;
-        int cur = days.poll();
-        
-        while(!days.isEmpty()){
-
-            if(days.peek()<=cur) {
-                count++;
-                days.poll();
+        int day = need[0];
+        for(int i=1; i<need.length+1; i++){
+            if(i==need.length) {
+                list.add(count);
             }
-            else if(cur<days.peek()) {
-                queue.add(count);
+            
+            else if(need[i]<=day) {
+                count++;
+            }
+            
+            else if(day<need[i]) {
+                list.add(count);
+                day = need[i];
                 count=1;
-                cur=days.poll();
             }
         }
         
-        //마지막 남은 작업
-        queue.add(count);
-        
-        //배열에 저장
-        int idx=0;
-        int[] answer = new int[queue.size()];
-        
-        while(!queue.isEmpty()){
-            answer[idx]=queue.poll();
-            idx++;
+        int[] answer = new int[list.size()];
+        for(int i=0; i<answer.length; i++){
+            answer[i] = list.get(i);
         }
         
         return answer;
