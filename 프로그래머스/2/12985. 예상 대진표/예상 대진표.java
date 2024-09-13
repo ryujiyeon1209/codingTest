@@ -2,19 +2,32 @@ import java.util.*;
 
 class Solution {
     public int solution(int n, int a, int b) {
-        int answer = 1;
+        int answer = 0;
 
-        while(true){
-            int min = Math.min(a, b);
-            if(Math.abs(a-b)==1 && min%2==1) break;
-            
-            a = (a%2==0) ? a/2 : (a/2)+1;
-            b = (b%2==0) ? b/2 : (b/2)+1;
-            answer++;
-            
-          
+        Queue<Integer> queue = new LinkedList();
+        for(int i=0; i<=n; i++){
+            queue.add(i);
         }
 
+        //참가자 확인하기
+        while(true) {
+            
+            //한바퀴 다 돌면
+            if(queue.peek()==0) {   
+                answer++;
+                queue.add(queue.poll());
+            }
+            
+            //현재 참자가
+            int A = queue.poll();
+            int B = queue.poll();
+            
+            if((A==a || A==b) && (B==a || B==b)) break; //a와 b 둘 다 참가할 때
+            else if(A==a || A==b) queue.add(A);         //a만 참가할 때
+            else if((B==a || B==b)) queue.add(B);       //b만 참가할 때
+            else queue.add(A);                          //a와 b 둘 다 아닐 때
+        }
+        
         return answer;
     }
 }
