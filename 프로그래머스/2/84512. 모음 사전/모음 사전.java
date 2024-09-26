@@ -1,53 +1,44 @@
 import java.util.*;
 
 class Solution {
-
-    static List<String> list;
-    static char[] arr, select;
-    
     public int solution(String word) {
-        int answer = 0;
         
-        //모음으로 만들 수 있는 모든 단어 확인
-        arr = new char[] {'A', 'E', 'I', 'O', 'U'};
-        list = new ArrayList();
+        String[] str = {"A", "E", "I", "O", "U"};
         
-        for(int i=1; i<=arr.length; i++){
-            select = new char[i];
-            permutation(0);
+        PriorityQueue<String> queue = new PriorityQueue<>();
+        
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<str.length; i++){
+            String str1 = str[i];
+            queue.add(str1);
+            
+            for(int j=0; j<str.length; j++){
+                String str2 = str1+str[j];
+                queue.add(str2);
+                
+                for(int k=0; k<str.length; k++){
+                    String str3 = str2+str[k];
+                    queue.add(str3);
+                    
+                    for(int l=0; l<str.length; l++){
+                        String str4 = str3+str[l];
+                        queue.add(str4);
+                        
+                        for(int p=0; p<str.length; p++){
+                            String str5 = str4+str[p];
+                            queue.add(str5);
+                        }
+                    }
+                }
+            }
         }
         
-        //사전순으로 정렬
-        Collections.sort(list);
-        
-        //순서 확인
-        for(int i=0; i<list.size(); i++){
-            if(list.get(i).equals(word)) answer=i+1;
+        int answer = 0;
+        while(!queue.isEmpty()) {
+            answer++;
+            if(word.equals(queue.poll())) break;
         }
         
         return answer;
     }
-    
-    
-    //중복 순열 메서드
-    public static void permutation(int idx){
-        
-        if(select.length<=idx) {
-            
-            String str = "";
-            for(int i=0; i<select.length; i++){
-                str+=select[i];
-            }
-            
-            list.add(str);
-            return;
-        }
-        
-        for(int i=0; i<arr.length; i++){
-            select[idx] = arr[i];
-            permutation(idx+1);
-        }
-    }
-
-
 }
