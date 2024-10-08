@@ -7,46 +7,48 @@ class Solution {
     public int solution(int n, int[][] computers) {
         int answer = 0;
         
-        //부모 노드 배열
-        parent = new int[n];
-        for(int i=0; i<n; i++){
-            parent[i] = i;
+        //부모 노드 저장 배열
+        parent = new int[n+1];
+        for(int i=0; i<parent.length; i++){
+            parent[i]=i;
         }
         
         //연결하기
         for(int i=0; i<computers.length; i++){
-            for(int j=0; j<computers.length; j++){
-                if(i==j) continue;
-                if(computers[i][j]==1) union(i, j);
+            for(int j=i+1; j<computers[i].length; j++){
+                if(computers[i][j]==1) {
+                    union(i+1, j+1);
+                }
             }
         }
         
-        //정리
+        //마지막 find
         for(int i=0; i<parent.length; i++){
             parent[i] = find(i);
-        }        
+        }
         
-        //중복 네트워크 삭제
+        //종류 개수 세기
         Set<Integer> set = new HashSet();
-        for(int i=0; i<parent.length; i++){
+        for(int i=1; i<parent.length; i++){
             set.add(parent[i]);
-        }          
+        }
         
-        return set.size();
+        answer = set.size();
+        return answer;
     }
     
-    //유니온
+    //union
     public static void union(int x, int y) {
         int px = find(x);
         int py = find(y);
         
-        if(px<=py) parent[py] = px;
-        else parent[px]=py;
+        if(px<=py) parent[py]=parent[px];
+        else parent[px]=parent[py];
     }
     
-    //파인드
+    //find
     public static int find(int x) {
-        if(parent[x]==x) return x;
+        if(x==parent[x]) return x;
         else return parent[x]=find(parent[x]);
     }
 }
