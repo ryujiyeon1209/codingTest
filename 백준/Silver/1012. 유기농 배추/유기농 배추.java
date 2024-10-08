@@ -1,84 +1,73 @@
 import java.util.*;
-import java.util.Scanner;
 
 public class Main {
 	
-	static int r, c, cabbage, count;
-	static int[] coordinate, x, y;
-	static int[][] arr;
+	static int n, m, answer;
+	static int[] r, c;
+	static int[][] map;
 	static boolean[][] isvisited;
-	static Queue<int[]> queue;
 	
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		
-		int T = sc.nextInt();
+		int test = sc.nextInt();
 		
-		for(int t=0; t<T; t++) {
+		for(int t=0; t<test; t++) {
+			m = sc.nextInt();
+			n = sc.nextInt();
+			int count = sc.nextInt();
 			
-			c = sc.nextInt();		//가로
-			r = sc.nextInt();		//세로
-			cabbage = sc.nextInt();	//배추 개수
-			
-			arr= new int[r][c];	//배열 생성 및 배추를 심을 좌표 받기
-			for(int i=0; i<cabbage; i++) {
-				int tmpj=sc.nextInt();
-				int tmpi=sc.nextInt();
+			map = new int[n][m];
+			for(int i=0; i<count; i++) {
+				int dm = sc.nextInt();
+				int dn = sc.nextInt();
 				
-				arr[tmpi][tmpj]=1;
+				map[dn][dm]=1;
 			}
 			
-			isvisited = new boolean[r][c];	//방문 처리 배열
-			x = new int[] {0, 1, 0, -1};
-			y = new int[] {1, 0, -1, 0};
+			r = new int[] {-1, 1, 0, 0};
+			c = new int[] {0, 0, -1, 1};
 			
+			isvisited = new boolean[n][m];
 			
-			count =0;	//필요한 배추흰지렁이 개수
-			
-			//배추가 심어져 있고, 내가 탐색하지 않은 곳이라면 BFS메서드 호출
-			for(int i=0; i<arr.length; i++) {
-				for(int j=0; j<arr[0].length; j++) {
-					if(arr[i][j]>0 && !isvisited[i][j]) {	
-						BFS(new int[] {i, j});
-						count++;
+			answer = 0;
+			for(int i=0; i<map.length; i++) {
+				for(int j=0; j<map[i].length; j++) {
+					if(map[i][j]==1 && !isvisited[i][j]) {
+						answer++;
+						BFS(i, j);
 					}
 				}
 			}
 			
-			System.out.println(count);
+			System.out.println(answer);
 		}
-		
 	}
 	
-	public static void BFS(int[] coordinate) {
+	//BFS
+	public static void BFS(int startr, int startc) {
+		Queue<int[]> queue = new LinkedList();
 		
-		queue = new LinkedList();
+		isvisited[startr][startc]=true;
+		queue.add(new int[] {startr, startc});
 		
-		//좌표가 들어오면 큐에 삽입하고 방문처리를 한다
-		queue.add(coordinate);
-		isvisited[coordinate[0]][coordinate[1]]=true;
-		
-		//큐가 공백상태가 될 때까지 반복
 		while(!queue.isEmpty()) {
+			int[] cur = queue.poll();
 			
-			int[] coor = queue.poll();
-			int i = coor[0];
-			int j = coor[1];
+			int i = cur[0];
+			int j = cur[1];
 			
-			//사방 탐색 시작
 			for(int k=0; k<4; k++) {
-				int dr = i +x[k];
-				int dc = j +y[k];
+				int dr = i+r[k];
+				int dc = j+c[k];
 				
-				//조건에 맞는지 확인 > 인덱스, 방문, 배추가 있는지 등
-				if(!(0<=dr && dr<arr.length && 0<=dc && dc<arr[0].length)) continue;
+				if(!(0<=dr && dr<n && 0<=dc && dc<m)) continue;
 				if(isvisited[dr][dc]) continue;
-				if(arr[dr][dc]==0) continue;
+				if(map[dr][dc]==0) continue;
 				
-				//조건에 맞다면 큐에 삽입하고 방문처리
-				queue.add(new int[] {dr, dc});
 				isvisited[dr][dc]=true;
+				queue.add(new int[] {dr, dc});
 			}
 		}
-	} 
+	}
 }
