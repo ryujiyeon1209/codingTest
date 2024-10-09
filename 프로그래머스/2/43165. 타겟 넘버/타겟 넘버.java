@@ -2,49 +2,37 @@ import java.util.*;
 
 class Solution {
     
-    static int count;
-    static List<Integer>[] list;
-    static int[] select;
+    static int answer;
+    static int[] choose, arr;
     
     public int solution(int[] numbers, int target) {
+    
+        arr = new int[] {1, -1};
+        choose = new int[numbers.length]; 
         
-        //인접리스트 생성
-        list = new List[numbers.length];
-        for(int i=0; i<list.length; i++){
-            list[i] = new ArrayList();
-        }
-        
-        for(int i=0; i<list.length; i++){
-            list[i].add(0);
-            list[i].add(1);
-        }
-        
-        //+-선택
-        select = new int[numbers.length];
-        
+        answer = 0;
         DFS(0, numbers, target);
         
-        return count;
+        return answer;
     }
     
-    //DFS
+    //순열
     public static void DFS(int idx, int[] numbers, int target) {
         
-        if(select.length<=idx) {
-            
+        if(choose.length<=idx) {
             int sum = 0;
-            for(int i=0; i<select.length; i++){
-                if(select[i]==0) sum+=numbers[i];
-                else sum-=numbers[i];
+            for(int i=0; i<choose.length; i++){
+                sum+=(numbers[i]*choose[i]);
             }
             
-            if(sum==target) count++;
+            if(sum==target) answer++;
             return;
         }
         
-        for(int i=0; i<list[idx].size(); i++){
-            select[idx] = list[idx].get(i);
+        for(int i=0; i<arr.length; i++){
+            choose[idx]=arr[i];
             DFS(idx+1, numbers, target);
         }
+        
     }
 }
