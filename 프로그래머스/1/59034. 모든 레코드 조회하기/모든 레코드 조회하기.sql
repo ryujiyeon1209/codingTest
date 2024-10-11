@@ -1,4 +1,4 @@
 -- 코드를 입력하세요
 select *
-from animal_ins
-order by animal_id asc;
+from ANIMAL_INS 
+order by ANIMAL_ID
