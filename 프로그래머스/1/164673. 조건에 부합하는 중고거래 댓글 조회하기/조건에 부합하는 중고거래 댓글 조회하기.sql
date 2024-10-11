@@ -1,7 +1,6 @@
 -- 코드를 입력하세요
-select b.title as TITLE, b.board_id as BOARD_ID, r.reply_id as REPLY_ID, r.writer_id as WRITER_ID, 
-    r.contents as CONTENTS, date_format(r.created_date, "%Y-%m-%d") as CREATED_DATE
+select b.TITLE, b.BOARD_ID, r.REPLY_ID, r.WRITER_ID, r.CONTENTS, date_format(r.CREATED_DATE, "%Y-%m-%d") as CREATED_DATE
 from USED_GOODS_BOARD as b join USED_GOODS_REPLY as r
-where b.board_id=r.board_id
-    and b.created_date between '2022-10-01' and '2022-10-31'
-order by r.created_date, b.title; 
+on b.board_id=r.board_id
+where year(b.CREATED_DATE)=2022 and month(b.CREATED_DATE)=10
+order by r.CREATED_DATE, b.TITLE;
