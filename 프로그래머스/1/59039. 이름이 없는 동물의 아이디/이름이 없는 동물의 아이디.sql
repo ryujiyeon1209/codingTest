@@ -1,5 +1,5 @@
 -- 코드를 입력하세요
-select animal_id 
-from animal_ins
-where name is null
-order by name asc;
+select ANIMAL_ID
+from ANIMAL_INS 
+where NAME is null
+order by ANIMAL_ID;
