@@ -1,5 +1,5 @@
 -- 코드를 입력하세요
-select animal_id, name
-from ANIMAL_INS
-where intake_condition="Sick"
-order by animal_id;
+select ANIMAL_ID, NAME
+from ANIMAL_INS 
+where INTAKE_CONDITION = "Sick"
+order by ANIMAL_ID;
