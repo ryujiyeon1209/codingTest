@@ -1,5 +1,10 @@
 -- 코드를 작성해주세요
-select e.id as ID
-from ECOLI_DATA as e join ECOLI_DATA as d join ECOLI_DATA as p
-where e.parent_id=d.id and d.parent_id=p.id
-    and e.id is not null and p.parent_id is null
+select child.ID
+from (
+    select ID
+    from ECOLI_DATA
+    where PARENT_ID is null
+) as  grand
+join ECOLI_DATA as parent join ECOLI_DATA as child 
+on grand.ID=parent.PARENT_ID and parent.ID=child.PARENT_ID
+order by child.ID
