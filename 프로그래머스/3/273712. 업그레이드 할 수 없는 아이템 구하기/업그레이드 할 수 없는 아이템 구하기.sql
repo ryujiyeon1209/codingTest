@@ -1,6 +1,12 @@
 -- 코드를 작성해주세요
-select info.item_id as ITEM_ID, info.item_name as ITEM_NAME, info.rarity as RARITY
-from ITEM_INFO as info left outer join ITEM_TREE as tree
-on info.item_id=tree.PARENT_ITEM_ID
-where tree.item_id is null
-order by ITEM_ID desc;
+with parent as (
+    select i.ITEM_ID as PARENT_ID, t.ITEM_ID
+    from ITEM_INFO as i join ITEM_TREE as t
+    on i.ITEM_ID=t.PARENT_ITEM_ID
+)
+
+select i.ITEM_ID, i.ITEM_NAME, i.RARITY
+from ITEM_INFO as i left join parent as p
+on i.ITEM_ID=p.PARENT_ID
+where p.ITEM_ID is null
+order by i.ITEM_ID desc;
