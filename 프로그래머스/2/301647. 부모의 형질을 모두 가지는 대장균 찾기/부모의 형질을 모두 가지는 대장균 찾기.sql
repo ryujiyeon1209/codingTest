@@ -1,6 +1,6 @@
 -- 코드를 작성해주세요
-select e.id as ID, e.genotype as GENOTYPE, p.genotype as PARENT_GENOTYPE
-from ECOLI_DATA as e join ECOLI_DATA as p
-where e.parent_id=p.id
-    and e.genotype&p.genotype=p.genotype
-order by id;
+select child.ID, child.GENOTYPE, parent.GENOTYPE as PARENT_GENOTYPE
+from ECOLI_DATA as child join ECOLI_DATA as parent
+on child.PARENT_ID=parent.ID
+where child.GENOTYPE&parent.GENOTYPE=parent.GENOTYPE
+order by child.ID
