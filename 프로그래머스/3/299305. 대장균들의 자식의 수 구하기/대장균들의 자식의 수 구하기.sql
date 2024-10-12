@@ -1,6 +1,11 @@
 -- 코드를 작성해주세요
-select c.id, if(p.parent_id is null, 0, count(c.id)) as CHILD_COUNT
-from ECOLI_DATA as c left outer join ECOLI_DATA as p
-on c.id = p.parent_id
-group by c.id
-order by c.id;
+select number.ID, ifnull(counting.cnt, 0) as CHILD_COUNT
+from ECOLI_DATA as number left join
+(
+    select parent.ID, count(*) as cnt
+    from ECOLI_DATA as parent join ECOLI_DATA as child
+    on parent.ID=child.PARENT_ID
+    group by parent.ID
+) as counting
+on number.ID=counting.ID
+order by number.ID;
