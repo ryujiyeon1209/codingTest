@@ -1,6 +1,5 @@
 -- 코드를 입력하세요
-select animal_id, name, sex_upon_intake
-from animal_ins
-where name = "Lucy" or name = "Ella" or name = "Pickle" or 
-    name = "Rogan" or name = "Sabrina" or name = "Mitty"
-order by animal_id asc;
+select ANIMAL_ID, NAME, SEX_UPON_INTAKE
+from ANIMAL_INS 
+where NAME in ("Lucy", "Ella", "Pickle", "Rogan", "Sabrina", "Mitty")
+order by ANIMAL_ID;
