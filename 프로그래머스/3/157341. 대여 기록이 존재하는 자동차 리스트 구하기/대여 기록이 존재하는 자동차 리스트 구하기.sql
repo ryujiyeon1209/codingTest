@@ -1,8 +1,6 @@
 -- 코드를 입력하세요
-select distinct c.car_id
-from car_rental_company_car as c join car_rental_company_rental_history as h
-where c.car_id = h.car_id and
-    c.car_type = "세단" and date_format(start_date, "%m") = "10"
-order by c.car_id desc; 
-
-
+select distinct c.CAR_ID	
+from CAR_RENTAL_COMPANY_CAR as c join CAR_RENTAL_COMPANY_RENTAL_HISTORY as h
+on c.CAR_ID=h.CAR_ID	
+where c.CAR_TYPE="세단" and month(h.START_DATE)=10
+order by c.CAR_ID desc;
