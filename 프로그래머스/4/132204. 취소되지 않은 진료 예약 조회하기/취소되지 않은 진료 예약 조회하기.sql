@@ -1,9 +1,12 @@
 -- 코드를 입력하세요
-select  a.apnt_no as APNT_NO, p.pt_name as PT_NAME, p.pt_no as PT_NO,
-    d.mcdp_cd as MCDP_CD, d.dr_name as DR_NAME, (a.apnt_ymd) as APNT_YMD 
-from PATIENT as p join APPOINTMENT as a join DOCTOR as d
-where p.pt_no=a.pt_no and d.dr_id=a.mddr_id
-    and date_format(a.apnt_ymd, "%Y-%m-%d")='2022-04-13'
-    and a.apnt_cncl_yn="N"
-    and d.mcdp_cd="CS"
-order by a.apnt_ymd;
+with APPOINT as (
+    select APNT_YMD, APNT_NO, PT_NO, MDDR_ID
+    from APPOINTMENT as a
+    where date_format(APNT_YMD, "%Y-%m-%d") = "2022-04-13" 
+        and MCDP_CD = "CS" and APNT_CNCL_YN = "N"
+)
+
+select a.APNT_NO, p.PT_NAME, p.PT_NO, d.MCDP_CD, d.DR_NAME, a.APNT_YMD
+from APPOINT as a join PATIENT as p join DOCTOR as d
+on a.PT_NO=p.PT_NO and a.MDDR_ID=d.DR_ID
+order by a.APNT_YMD;
