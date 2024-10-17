@@ -1,6 +1,6 @@
 -- 코드를 작성해주세요
-select distinct devel.ID, devel.EMAIL, devel.FIRST_NAME, devel.LAST_NAME
-from SKILLCODES as skill join DEVELOPERS as devel
-on skill.CODE&devel.SKILL_CODE=skill.CODE
-where skill.NAME="C#" or skill.NAME="Python"
-order by devel.ID;
+select distinct d.ID, d.EMAIL, d.FIRST_NAME, d.LAST_NAME
+from SKILLCODES as s join DEVELOPERS as d
+on s.CODE&d.SKILL_CODE=s.CODE
+where s.NAME="Python" or s.NAME="C#"
+order by d.ID;
