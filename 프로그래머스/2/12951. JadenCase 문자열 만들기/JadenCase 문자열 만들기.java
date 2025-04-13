@@ -4,42 +4,40 @@ class Solution {
     public String solution(String s) {
         String answer = "";
         
-        Queue<Character> queue = new LinkedList();
+        String[] strarr = s.split("");
         
-        char[] chList = s.toCharArray();
-        for(int i=0; i<chList.length; i++){
-            queue.add(chList[i]);
+        Queue<String> queue = new LinkedList();
+        for(int i=0; i<strarr.length; i++){
+            String str = strarr[i];
+            
+            if(queue.isEmpty() && (str.equals(" ") || isNum(strarr[i])))
+                queue.add(str);    
+            
+            else if(queue.isEmpty() && !isNum(strarr[i]))
+                queue.add(str.toUpperCase());
+            
+            else if(isNum(strarr[i]))
+                queue.add(str); 
+            
+            else if(strarr[i-1].equals(" ") && !isNum(strarr[i]))
+                queue.add(str.toUpperCase());
+            
+            
+            else if(!strarr[i-1].equals(" ") && !isNum(strarr[i]))
+                queue.add(str.toLowerCase());
+        
         }
         
-        boolean flag=true;
-        while(!queue.isEmpty()){
-            char ch = queue.poll();
-            
-            if(ch==' ') {
-                flag=true;
-                answer+=ch;
-                continue;
-            }
-            
-            ch = toChanage(ch, flag);
-            flag=false;
-            
-            answer+=ch;
+        while(!queue.isEmpty()) {
+            answer+=queue.poll();
         }
         
-        return answer;
+        return answer;                                       
     }
     
-    
-    public Character toChanage(char ch, boolean flag){
-        if(0<=ch && ch<=9) return ch;
-        
-        Character s = ' ';
-        if(flag) s = Character.toUpperCase(ch);
-        else s = Character.toLowerCase(ch);
-        
-        System.out.println("s : " + s);
-        
-        return s;
+    //숫자인지 확인 메서드
+    public static boolean isNum(String str) {
+        if('0'<=str.charAt(0) && str.charAt(0)<='9') return true;
+        else return false;
     }
 }
