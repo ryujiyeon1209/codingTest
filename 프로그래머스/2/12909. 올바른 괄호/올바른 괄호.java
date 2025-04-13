@@ -4,16 +4,17 @@ class Solution {
     boolean solution(String s) {
         boolean answer = true;
 
-        Stack<Character> stack = new Stack();
+        int sum = 0;
         for(int i=0; i<s.length(); i++){
-            char ch = s.charAt(i);
+            if(sum==0 && s.charAt(i)=='(') sum+=1;
+            else if(sum==0 && s.charAt(i)==')') return false;
             
-            if(ch=='(') stack.push('(');
-            else if(!stack.isEmpty() && ch==')') stack.pop();
-            else if(stack.isEmpty() && ch==')') return false;
+            else if(s.charAt(i)=='(') sum+=1;
+            else if(s.charAt(i)==')') sum-=1;
         }
         
-        if(!stack.isEmpty()) answer=false;
+        if(sum!=0) return false;
+
         return answer;
     }
 }
