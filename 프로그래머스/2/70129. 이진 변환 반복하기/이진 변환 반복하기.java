@@ -4,31 +4,40 @@ class Solution {
     public int[] solution(String s) {
         int[] answer = new int[2];
         
+        int idx = 0;
         int count = 0;
-        int count_zero = 0;
-        
-        //1이 아니라면 반복
         while(!s.equals("1")) {
+            idx++;
             
-            count++;
-            
-            int zero = 0;
-            int one = 0;
+            //1과 0의 개수 세기
+            int size = 0;
             for(int i=0; i<s.length(); i++){
-                if(s.charAt(i)=='0') zero++;
-                else one++;
+                if(s.charAt(i)=='1') size++;
             }
             
-            //1의 개수를 2짅수로 변경
-            s = Integer.toBinaryString(one);
-            count_zero+=zero;
+            count+=(s.length()-size);
             
+            //2진법으로 변환
+            s = change(size);
         }
         
-        //정답 배열에 저장
-        answer[0] = count;
-        answer[1] = count_zero;
+        answer[0] = idx;
+        answer[1] = count;
         
         return answer;
+    }
+    
+    //2진법 변환 메서드
+    public String change(int num) {
+        
+        StringBuilder sb = new StringBuilder();
+        while(num!=0) {
+            if(num%2==0) sb.append("0");
+            else sb.append("1");
+            
+            num/=2;
+        }
+        
+        return sb.reverse().toString();
     }
 }
