@@ -2,17 +2,15 @@ import java.util.*;
 
 class Solution {
     public int solution(int[] num_list) {
-        int answer = 0;
         
-        String even = "";
-        String odd = "";
+        int even = 0;
+        int odd = 0;
         
         for(int num : num_list) {
-            if(num%2==0) even+=num;
-            else odd+=num;
+            if(num%2==0) even=(even*10)+num;
+            else odd=(odd*10)+num;
         }
         
-        answer+=(Integer.parseInt(even) + Integer.parseInt(odd));
-        return answer;
+        return even+odd;
     }
 }
